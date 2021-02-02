@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 
 namespace enigma_prime.Data
 {
@@ -16,5 +18,9 @@ namespace enigma_prime.Data
         public string Type { get; set; }
         public string Url { get; set; }
         public string Developer { get; set; }
+
+        [ForeignKey(nameof(UserId))]
+        public virtual IdentityUser User { get; set; }
+        public string UserId { get; set; }
     }
 }

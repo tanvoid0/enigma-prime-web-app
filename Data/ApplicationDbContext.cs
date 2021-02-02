@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using enigma_prime.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -58,5 +59,6 @@ namespace enigma_prime.Data
             }
         }
         public DbSet<Password> Password { get; set; }
+        public DbSet<UserRole> UserRole { get; set; }
     }
 }

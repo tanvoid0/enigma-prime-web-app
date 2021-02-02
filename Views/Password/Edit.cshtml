@@ -7,58 +7,76 @@
 <h1>Edit</h1>
 
 <h4>Password</h4>
-<hr />
+<hr/>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Id"/>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                <input asp-for="Name" class="form-control"/>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Pass" class="control-label"></label>
-                <input asp-for="Pass" class="form-control" />
+                <div class="input-group">
+                    <input asp-for="Pass" class="form-control" id="password"/>
+                    <div class="input-group-append">
+                        <button class="btn btn-info" id="visibility">
+                            <i class="fas fa-eye" id="visibility-icon"></i>
+                        </button>
+                        <button class="btn btn-dark" id="pass-gen">
+                            <i class="fas fa-random"></i>
+                        </button>
+                    </div>
+                </div>
                 <span asp-validation-for="Pass" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Type" class="control-label"></label>
-                <input asp-for="Type" class="form-control" />
+                <select asp-for="Type" class="form-control" id="app-type">
+                    <option value="application">Application</option>
+                    <option value="web">Website</option>
+                    <option value="game">Game</option>
+                </select>
                 <span asp-validation-for="Type" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" id="url-input">
                 <label asp-for="Url" class="control-label"></label>
-                <input asp-for="Url" class="form-control" />
+                <input asp-for="Url" class="form-control"/>
                 <span asp-validation-for="Url" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" id="developer-input">
                 <label asp-for="Developer" class="control-label"></label>
-                <input asp-for="Developer" class="form-control" />
+                <input asp-for="Developer" class="form-control"/>
                 <span asp-validation-for="Developer" class="text-danger"></span>
             </div>
+            @* <div class="form-group"> *@
+            @*     <label asp-for="CreatedAt" class="control-label"></label> *@
+            @*     <input asp-for="CreatedAt" class="form-control"/> *@
+            @*     <span asp-validation-for="CreatedAt" class="text-danger"></span> *@
+            @* </div> *@
+            @* <div class="form-group"> *@
+            @*     <label asp-for="UpdatedAt" class="control-label"></label> *@
+            @*     <input asp-for="UpdatedAt" class="form-control"/> *@
+            @*     <span asp-validation-for="UpdatedAt" class="text-danger"></span> *@
+            @* </div> *@
             <div class="form-group">
-                <label asp-for="CreatedAt" class="control-label"></label>
-                <input asp-for="CreatedAt" class="form-control" />
-                <span asp-validation-for="CreatedAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UpdatedAt" class="control-label"></label>
-                <input asp-for="UpdatedAt" class="form-control" />
-                <span asp-validation-for="UpdatedAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Update" class="btn btn-primary"/>
+                <a asp-action="Index" class="btn btn-danger">Cancel</a>
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index"></a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script type="application/javascript">
+        document.getElementById("password").setAttribute("type", "password");
+    </script>
 }

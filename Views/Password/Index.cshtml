@@ -4,55 +4,83 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<div class="row">
+    <div class="col-8">
+        <h1>Index</h1>
+    </div>
+    <div class="col-4">
+        <a class="btn btn-outline-success float-right" asp-action="Create"><i class="fas fa-plus-circle"></i> Create</a>
+    </div>
+</div>
+<table class="table display" id="password-table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Pass)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Type)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Url)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Developer)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpdatedAt)
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>#</th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Pass)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Url)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Developer)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedAt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UpdatedAt)
+        </th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @{ int i = 1; }
+    @foreach (var item in Model)
+    {
         <tr>
+            <td>
+                #
+                @* @i *@
+                @{ i++; }
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Pass)
+                <div id="password">
+                    <div id="password-hide-@item.Id">
+                        **********
+                    </div>
+                    <div id="password-show-@item.Id" style="display: none;">
+                        @Html.DisplayFor(modelItem => item.Pass)
+                    </div>
+                </div>
+
+                <button class="btn btn-dark" onclick="toggle_pass(@item.Id);">
+                    <i class="fas fa-eye" id="visibility-icon-@item.Id"></i>
+                </button>
             </td>
             <td>
+
                 @Html.DisplayFor(modelItem => item.Type)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Url)
+                <a href="@item.Url" target="_blank">
+                    @Html.DisplayFor(modelItem => item.Url)
+                </a>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Developer)
+                <a href="https://en.wikipedia.org/w/index.php?search=@item.Developer&title=Special%3ASearch&go=Go&ns0=1" target="_blank">
+                    @Html.DisplayFor(modelItem => item.Developer)
+                </a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedAt)
@@ -61,11 +89,45 @@
                 @Html.DisplayFor(modelItem => item.UpdatedAt)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <div class="btn-group">
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-dark">
+                        <i class="fas fa-eye"></i>
+                    </a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-info">
+                        <i class="fas fa-pencil-alt"></i>
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">
+                        <i class="fas fa-trash-alt"></i>
+                    </a>
+                </div>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>
+
+@section Scripts
+{
+    <script type="text/javascript">
+    function toggle_pass(id) {
+        event.preventDefault();
+        const pass_hide = document.getElementById(`password-hide-${id}`);
+        const pass_show = document.getElementById(`password-show-${id}`);
+        const icon = document.getElementById(`visibility-icon-${id}`);
+        if (icon.getAttribute('class') === 'fas fa-eye'){
+            icon.setAttribute('class', 'fas fa-eye-slash')
+            pass_hide.style.display = "none";
+            pass_show.style.display = "block";
+        } else {
+            icon.setAttribute('class', 'fas fa-eye')
+            pass_hide.style.display = "block";
+            pass_show.style.display = "none";
+        }
+        console.log('visibility', document.getElementById(`visibility-icon-${id}`).getAttribute('class'));
+    }
+    $(document).ready(function () {
+        $("#password-table").DataTable();
+    });
+       
+    </script>
+}

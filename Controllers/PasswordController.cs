@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using enigma_prime.Data;
+using enigma_prime.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace enigma_prime.Controllers
 {
@@ -17,21 +19,55 @@ namespace enigma_prime.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
-
-        public PasswordController(ApplicationDbContext context)
+        public PasswordController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
+        }
+
+        private Task<IdentityUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
+
+        private async Task<string> GetCurrentUserId()
+        {
+            IdentityUser usr = await GetCurrentUserAsync();
+            return usr?.Id;
         }
         
         [Authorize]
         // GET: Password
         public async Task<IActionResult> Index()
         {
+            if (User.IsInRole("Admin"))
+            {
+                return RedirectToAction(nameof(Admin));
+            }
+            var userId = await GetCurrentUserId();
+            var passwords = await _context.Password.Where(p => p.UserId == userId).ToListAsync();
+
+            foreach (var password in passwords)
+            {
+                password.Pass = decrypt(password.Pass);
+                password.User = await _userManager.FindByIdAsync(password.UserId);
+            }
+            return View(passwords);
+        }
+        
+        // [Authorize(Roles="Admin")]
+        // GET: Password
+        public async Task<IActionResult> Admin()
+        {
+            if (!User.IsInRole("Admin"))
+            {
+                return RedirectToAction(nameof(Index));
+            }
             var passwords = await _context.Password.ToListAsync();
             foreach (var password in passwords)
             {
                 password.Pass = decrypt(password.Pass);
+                password.User = await _userManager.FindByIdAsync(password.UserId);
             }
             return View(passwords);
         }
@@ -208,21 +244,6 @@ namespace enigma_prime.Controllers
             return new string(newStr);
         }
 
-        public async Task createRolesandUsers()
-        {
-            // bool x = await _roleManager.RoleExistsAsync("Admin");
-            // if (!x)
-            // {
-            //     // first we create Admin role
-            //     var role = new IdentityRole();
-            //     role.Name = "Admin";
-            //     await _roleManager.CreateAsync(role);
-            //     
-            //     // Here we create an Admin super user who will maintain the website
-            //     var user = new ApplicationUser();
-            //     user.UserName = "root";
-            //     
-            // }
-        }
+       
     }
 }

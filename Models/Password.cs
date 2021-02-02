@@ -18,9 +18,10 @@ namespace enigma_prime.Data
         public string Type { get; set; }
         public string Url { get; set; }
         public string Developer { get; set; }
-
-        [ForeignKey(nameof(UserId))]
-        public virtual IdentityUser User { get; set; }
         public string UserId { get; set; }
+
+        [ForeignKey("UserId")]
+        [Display(Name="Created By")]
+        public virtual IdentityUser User { get; set; }
     }
 }

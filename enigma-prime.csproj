@@ -31,6 +31,13 @@
       <_ContentIncludedByDefault Remove="Views\Role\Details.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Role\DisplayRoles.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Role\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Role\EditUserRole.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Role\Test.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Role\Userlist.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Views\Role\Create.cshtml" />
     </ItemGroup>
 
 </Project>

@@ -4,12 +4,13 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using enigma_prime.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace enigma_prime.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser, IdentityRole, string>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -58,7 +59,27 @@ namespace enigma_prime.Data
                 }
             }
         }
+        
+        // protected override void OnModelCreating(ModelBuilder builder)
+        // {
+        //     base.OnModelCreating(builder);
+        //
+        //     builder.Entity<ApplicationUserRole>(userRole =>
+        //     {
+        //         userRole.HasKey(ur => new { ur.UserId, ur.RoleId });
+        //
+        //         userRole.HasOne(ur => ur.Role)
+        //             .WithMany(r => r.UserRoles)
+        //             .HasForeignKey(ur => ur.RoleId)
+        //             .IsRequired();
+        //
+        //         userRole.HasOne(ur => ur.User)
+        //             .WithMany(r => r.UserRoles)
+        //             .HasForeignKey(ur => ur.UserId)
+        //             .IsRequired();
+        //     });
+        // }
+        
         public DbSet<Password> Password { get; set; }
-        public DbSet<UserRole> UserRole { get; set; }
     }
 }

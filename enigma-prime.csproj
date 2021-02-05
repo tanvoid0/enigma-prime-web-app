@@ -34,6 +34,8 @@
       <_ContentIncludedByDefault Remove="Views\Role\EditUserRole.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Role\Test.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Role\Userlist.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Home\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Home\Privacy.cshtml" />
     </ItemGroup>
 
     <ItemGroup>

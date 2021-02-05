@@ -57,6 +57,7 @@ namespace enigma_prime.Controllers
         
         // [Authorize(Roles="Admin")]
         // GET: Password
+        [Authorize]
         public async Task<IActionResult> Admin()
         {
             if (!User.IsInRole("Admin"))
@@ -110,7 +111,7 @@ namespace enigma_prime.Controllers
         {
             if (ModelState.IsValid)
             {
-                var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                // var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 var pass = new Password
                 {
                     Name = password.Name,
@@ -118,7 +119,7 @@ namespace enigma_prime.Controllers
                     Type = password.Type,
                     Url = password.Url,
                     Developer = password.Developer,
-                    UserId = currentUserId,
+                    UserId = await GetCurrentUserId(),
                 };
                 _context.Add(pass);
                 await _context.SaveChangesAsync();
@@ -152,7 +153,7 @@ namespace enigma_prime.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Pass,Type,Url,Developer,CreatedAt,UpdatedAt")] Password password)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Pass,Type,Url,Developer,UserId,CreatedAt,UpdatedAt")] Password password)
         {
             if (id != password.Id)
             {

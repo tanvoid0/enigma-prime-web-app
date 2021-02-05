@@ -16,12 +16,15 @@
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">enigma_prime</a>
+            <a class="navbar-brand" asp-area="" asp-controller="Password" asp-action="Index">
+                <img src="~/logo.gif" alt="" style="height: 50px; width: 50px; border-radius: 50%;"/>
+                Enigma Prime
+            </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <partial name="_LoginPartial" />
+            <partial name="_LoginPartial"/>
         </div>
     </nav>
 </header>
@@ -33,7 +36,7 @@
 
 <footer class="border-top footer text-muted">
     <div class="container">
-        &copy; 2021 - enigma_prime - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        &copy; 2021 - enigma_prime
     </div>
 </footer>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>

@@ -2,6 +2,24 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+
+function toggle_pass(id) {
+    event.preventDefault();
+    const pass_hide = document.getElementById(`password-hide-${id}`);
+    const pass_show = document.getElementById(`password-show-${id}`);
+    const icon = document.getElementById(`visibility-icon-${id}`);
+    if (icon.getAttribute('class') === 'fas fa-eye'){
+        icon.setAttribute('class', 'fas fa-eye-slash')
+        pass_hide.style.display = "none";
+        pass_show.style.display = "block";
+    } else {
+        icon.setAttribute('class', 'fas fa-eye')
+        pass_hide.style.display = "block";
+        pass_show.style.display = "none";
+    }
+    console.log('visibility', document.getElementById(`visibility-icon-${id}`).getAttribute('class'));
+}
+
 $(function () {
     const url = $("#url-input");
     const developer = $("#developer-input");
@@ -96,4 +114,9 @@ $(function () {
     //     alert("It was clicked"+type);
     // }
 
+    $("#password-table").DataTable({
+        fixedColumns: {
+            leftColumns: 2,
+        }
+    });
 });

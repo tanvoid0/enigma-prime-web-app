@@ -57,7 +57,12 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <button type="submit" class="btn btn-danger">
+            <i class="fas fa-trash-alt"></i> Delete
+        </button>
+        <a asp-action="Index" class="btn btn-info">
+            <i class="fas fa-times"></i>
+            Cancel
+        </a>
     </form>
 </div>

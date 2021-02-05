@@ -1,0 +1,125 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Http
+@model IEnumerable<enigma_prime.Data.Password>
+@inject UserManager<IdentityUser> userManager
+
+<table class="table display" id="password-table">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th style="width: 300px;">
+            @Html.DisplayNameFor(model => model.Pass)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Url)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Developer)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedAt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UpdatedAt)
+        </th>
+        @if (User.IsInRole("Admin"))
+        {
+            <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
+        }
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @{ int i = 1; }
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                #
+                @* @i *@
+                @{ i++; }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                <div id="password-hide-@item.Id">
+                    **********
+                </div>
+                <div id="password-show-@item.Id" style="display: none;">
+                    @Html.DisplayFor(modelItem => item.Pass)
+                </div>
+                <button style="margin-top: -24px" class="btn btn-sm btn-secondary float-right" onclick="toggle_pass(@item.Id);" title="Toggle visibility">
+                    <i class="fas fa-eye" id="visibility-icon-@item.Id"></i>
+                </button>
+            </td>
+            <td>
+                @* <span class="text-capitalize">@Html.DisplayFor(modelItem => item.Type)</span> *@
+                @* <br> *@
+                <span title="@item.Type" class="btn btn-primary btn-sm">
+                    @if (item.Type == "game")
+                    {
+                        <i class="fas fa-gamepad"></i>
+                    }
+                    else if (item.Type == "web")
+                    {
+                        <i class="fas fa-globe"></i>
+                    }
+                    else if (item.Type == "application")
+                    {
+                        <i class="fas fa-desktop"></i>
+                    }
+                </span>
+            </td>
+            <td>
+                <a href="@item.Url" target="_blank" class="text-capitalize">
+                    @if (@item.Url != null)
+                    {
+                        @item.Url.Split("/")[2]
+                    }
+                </a>
+            </td>
+            <td>
+                <a href="https://en.wikipedia.org/w/index.php?search=@item.Developer&title=Special%3ASearch&go=Go&ns0=1" target="_blank">
+                    <span class="text-capitalize">
+                        @Html.DisplayFor(modelItem => item.Developer)
+                    </span>
+                </a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedAt)
+            </td>
+            @if (User.IsInRole("Admin"))
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.UserName)
+                </td>
+            }
+            <td>
+                <div class="btn-group">
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-dark">
+                        <i class="fas fa-eye"></i>
+                    </a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-info">
+                        <i class="fas fa-pencil-alt"></i>
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">
+                        <i class="fas fa-trash-alt"></i>
+                    </a>
+                </div>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

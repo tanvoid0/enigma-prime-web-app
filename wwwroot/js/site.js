@@ -20,6 +20,40 @@ function toggle_pass(id) {
     console.log('visibility', document.getElementById(`visibility-icon-${id}`).getAttribute('class'));
 }
 
+function copyPass(id) {
+    const pass = document.getElementById(`password-show-${id}`).innerText;
+    let dummy = document.createElement("textarea");
+    document.body.appendChild(dummy);
+    dummy.value = pass;
+    dummy.select();
+    document.execCommand("copy");
+    document.body.removeChild(dummy);
+    let timerInterval
+    Swal.fire({
+        html: 'Your <strong>password</strong> is copied to clipboard',
+        icon: 'success',
+        timer: 1500,
+        showConfirmButton: false,
+        // timerProgressBar: true,
+        // didOpen: () => {
+        //     Swal.showLoading()
+        //     timerInterval = setInterval(() => {
+        //         const content = Swal.getContent()
+        //         if (content) {
+        //             const b = content.querySelector('b')
+        //             if (b) {
+        //                 b.textContent = Swal.getTimerLeft()
+        //             }
+        //         }
+        //     }, 100)
+        // },
+        willClose: () => {
+            clearInterval(timerInterval)
+        }
+    });
+
+}
+
 $(function () {
     const url = $("#url-input");
     const developer = $("#developer-input");
@@ -27,9 +61,16 @@ $(function () {
     const visibility = $("#visibility");
     const visibility_icon = $("#visibility-icon");
     const pass_gen = $("#pass-gen");
-
-    url.hide();
-    developer.hide();
+    const app_type = $("#app-type").find(":selected").text();
+    if(app_type == 'Application') {
+        // alert("Application")
+        url.hide();
+        developer.hide();
+    } else if(app_type == "Website"){
+        developer.hide();
+    } else if(app_type == "Game"){
+        url.hide();
+    }
 
     $("#app-type").change(function () {
         const value = $(this).val();
